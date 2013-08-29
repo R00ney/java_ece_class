@@ -1,0 +1,38 @@
+
+Neal O'Hara
+ngohara
+This session started Wed Aug 28 17:30:55 EDT 2013
+Support: Hello! I'm available to answer your questions.
+Support: If at any time you no longer my help, just type
+         'Bye' to leave.
+Client:   ajdkfh         Support: Make sure your computer is turned on. That will help.
+Client:   ajkf         Support: Try it on a different computer.
+Client:   adkjf         Support: Try banging on it a little.
+Client:            Support: You there?
+Client:            Support: You there?
+Client:            Support: You there?
+Client:   adsjkf         Support: Try banging on it a little.
+Client:   bye         Support: Bye-bye.
+
+Neal O'Hara
+ngohara
+This session started Wed Aug 28 17:36:31 EDT 2013
+Support: Hello! I'm available to answer your questions.
+Support: If at any time you no longer my help, just type
+         'Bye' to leave.
+Client:   laksdjf         Support: Try banging on it a little.
+Client:   adklsjf         Support: Try it on a different computer.
+Client:            Support: You there?
+Client:            Support: You there?
+Client:            Support: You there?
+Client:            Support: You there?
+Client:            Support: You there?
+Client:   1         Support: Try it on a different computer.
+Client:            Support: You there?
+Client:            Support: You there?
+Client:            Support: You there?
+Client:   adsl;jfk         Support: You may want to re-install the OS.
+Client:            Support: You there?
+Client:            Support: You there?
+Client:   bye         Support: Bye-bye.
+Session Ended:  Wed Aug 28 17:36:46 EDT 2013
