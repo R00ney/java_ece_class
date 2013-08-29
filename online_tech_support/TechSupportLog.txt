@@ -36,3 +36,22 @@ Client:            Support: You there?
 Client:            Support: You there?
 Client:   bye         Support: Bye-bye.
 Session Ended:  Wed Aug 28 17:36:46 EDT 2013
+
+Neal O'Hara
+ngohara
+This session started Thu Aug 29 01:35:25 EDT 2013
+Support: Hello! I'm available to answer your questions.
+Support: If at any time you no longer my help, just type
+         'Bye' to leave.
+ERROR: Attempt to connect to the TechSupportServer at 127.0.1.1 has failed.
+This network address may be incorrect for the server,
+or the server may not be up. The specific failure is:
+java.net.ConnectException: Connection refused
+
+Neal O'Hara
+ngohara
+This session started Thu Aug 29 01:38:49 EDT 2013
+Support: Hello! I'm available to answer your questions.
+Support: If at any time you no longer my help, just type
+         'Bye' to leave.
+Connected to the server at 127.0.1.1

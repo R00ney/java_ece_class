@@ -73,7 +73,7 @@ public class TechSupportClient {
 			while(true) {
 						//Attempt to open socket
 				try {
-					Socket socket = new Socket(args[0],1234);
+					Socket socket = new Socket(args[0],1919);
 					System.out.println("Connected to the server at " + args[0]);
 					try {
 						log_writer.write("Connected to the server at " + args[0]  + newLine);							

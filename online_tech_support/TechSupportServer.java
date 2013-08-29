@@ -1,7 +1,3 @@
-import java.io.*;
-import java.util.Date;
-import java.net.ServerSocket;
-import java.net.InetAddress;
 
 /**
  *  @author jtuck
@@ -10,6 +6,12 @@ import java.net.InetAddress;
 // Modified by Neal O'Hara
 // ngohara
 // 8/28/13
+
+import java.io.*;
+import java.util.Date;
+import java.net.ServerSocket;
+import java.net.InetAddress;
+import java.net.Socket;
 
 
 public class TechSupportServer {
@@ -21,6 +23,8 @@ public class TechSupportServer {
 		BufferedWriter log_writer = null;
 		String newLine = System.getProperty ( "line.separator" );
 		String myname = "Neal O'Hara" + newLine + "ngohara" + newLine;
+		int drop_conn_count = 0;
+		ServerSocket ss = null;
 		
 		try {
 			//Create a log of interactions
@@ -54,7 +58,7 @@ public class TechSupportServer {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 		
 		try{ //Setup SocketServer and IP Address
-			ServerSocket ss = new ServerSocket(1919);// specify port #
+			ss = new ServerSocket(1919);// specify port #
 	
 			System.out.println("TechSupportServer is up at "
 				+ InetAddress.getLocalHost().getHostAddress()
@@ -98,7 +102,28 @@ public class TechSupportServer {
 		try {
 			while(true) {
 				
-				
+				//Make and Report Client connections or connection issues
+				try {
+					Socket socket = ss.accept(); // wait for a client to connect
+					
+					System.out.println("Connection made from a calling client!");
+					try {
+						log_writer.write("Connection made from a calling client!" + newLine);
+					} catch (Exception e35) {
+						System.out.println("Error: Could not write to TechSupportLog.txt") ;
+						System.out.println(e35);
+					}
+					
+				} catch (Exception ioe) {
+					drop_conn_count++; 	//keep track of total connections lost
+					System.out.println("Connection problem with a client: " + ioe + newLine + "Total Connections lost = " + String.valueOf(drop_conn_count));
+					try {
+						log_writer.write("Connection problem with a client: " + ioe + newLine + "Total Connections lost = " + String.valueOf(drop_conn_count) + newLine);
+					} catch (Exception e36) {
+						System.out.println("Error: Could not write to TechSupportLog.txt") ;
+						System.out.println(e36);
+					}
+				}
 				
 				String line = reader.readLine().trim();
 				try {
