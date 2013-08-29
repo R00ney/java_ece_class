@@ -1,6 +1,7 @@
 import java.io.*;
 import java.util.Date;
-
+import java.net.ServerSocket;
+import java.net.InetAddress;
 
 /**
  *  @author jtuck
@@ -12,7 +13,9 @@ import java.util.Date;
 
 
 public class TechSupportServer {
+	
 	public static void main(String[] args) {
+		
 		
 		FileWriter fw = null;
 		BufferedWriter log_writer = null;
@@ -50,6 +53,28 @@ public class TechSupportServer {
 		// Set up an object to read in a question from the user
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 		
+		try{ //Setup SocketServer and IP Address
+			ServerSocket ss = new ServerSocket(1919);// specify port #
+	
+			System.out.println("TechSupportServer is up at "
+				+ InetAddress.getLocalHost().getHostAddress()
+				+" on port " 
+				+ ss.getLocalPort());
+	
+			
+			try {
+				log_writer.write("TechSupportServer is up at "
+				+ InetAddress.getLocalHost().getHostAddress()
+				+" on port " 
+				+ ss.getLocalPort() + newLine);
+			} catch (Exception e34) {
+				System.out.println("Error: Could not write to TechSupportLog.txt") ;
+				System.out.println(e34);
+			}
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		
 		
 		try {
 			// Provide a greeting
@@ -65,11 +90,24 @@ public class TechSupportServer {
 			System.out.println(e);
 		}
 		
+		
+		
+		
+		
+		
 		try {
 			while(true) {
-				String line = reader.readLine().trim();
-				log_writer.write("Client:   " + line + "         ");
 				
+				
+				
+				String line = reader.readLine().trim();
+				try {
+					log_writer.write(line + newLine);
+				} catch (Exception e34) {
+					System.out.println("Error: Could not write to TechSupportLog.txt") ;
+					System.out.println(e34);
+				}
+					
 				// if the line has no characters...
 				if (line.length() > 0) {
 					// check if string matches bye
@@ -80,8 +118,12 @@ public class TechSupportServer {
 					String answer = responses[(int)(Math.random()*responses.length)];
 
 					System.out.println("Support: " + answer);
-					log_writer.write("Support: " + answer  + newLine);
-					
+					try {
+						log_writer.write("Support: " + answer + newLine);
+					} catch (Exception e23) {
+							System.out.println("Error: Could not write to TechSupportLog.txt") ;
+							System.out.println(e23);
+					}
 				} else {
 					
 					System.out.println("Support: You there?");
@@ -123,4 +165,5 @@ public class TechSupportServer {
 			System.out.println(e);
 		}
 	}
+	
 }
