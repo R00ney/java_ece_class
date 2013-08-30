@@ -14,10 +14,9 @@ import java.net.InetAddress;
 import java.net.Socket;
 
 
-public class TechSupportServer {
+public class TechSupportServer {	
 	
 	public static void main(String[] args) {
-		
 		
 		FileWriter fw = null;
 		BufferedWriter log_writer = null;
@@ -25,6 +24,13 @@ public class TechSupportServer {
 		String myname = "Neal O'Hara" + newLine + "ngohara" + newLine;
 		int drop_conn_count = 0;
 		ServerSocket ss = null;
+		Socket socket = null;
+		DataOutputStream server_dos = null;
+		DataInputStream server_dis = null;
+		
+		String test = "This is a test connection";
+		Boolean first_time = true;
+		Boolean bye_occured = false;
 		
 		try {
 			//Create a log of interactions
@@ -56,6 +62,8 @@ public class TechSupportServer {
 		
 		// Set up an object to read in a question from the user
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+		
+		
 		
 		try{ //Setup SocketServer and IP Address
 			ss = new ServerSocket(1919);// specify port #
@@ -104,16 +112,17 @@ public class TechSupportServer {
 				
 				//Make and Report Client connections or connection issues
 				try {
-					Socket socket = ss.accept(); // wait for a client to connect
+					socket = ss.accept(); // wait for a client to connect
 					
-					System.out.println("Connection made from a calling client!");
-					try {
-						log_writer.write("Connection made from a calling client!" + newLine);
-					} catch (Exception e35) {
-						System.out.println("Error: Could not write to TechSupportLog.txt") ;
-						System.out.println(e35);
+					if ( first_time ) {
+						System.out.println("Connection made from a calling client!");
+						try {
+							log_writer.write("Connection made from a calling client!" + newLine);
+						} catch (Exception e35) {
+							System.out.println("Error: Could not write to TechSupportLog.txt") ;
+							System.out.println(e35);
+						}
 					}
-					
 				} catch (Exception ioe) {
 					drop_conn_count++; 	//keep track of total connections lost
 					System.out.println("Connection problem with a client: " + ioe + newLine + "Total Connections lost = " + String.valueOf(drop_conn_count));
@@ -125,43 +134,128 @@ public class TechSupportServer {
 					}
 				}
 				
-				String line = reader.readLine().trim();
-				try {
-					log_writer.write(line + newLine);
-				} catch (Exception e34) {
-					System.out.println("Error: Could not write to TechSupportLog.txt") ;
-					System.out.println(e34);
-				}
-					
-				// if the line has no characters...
-				if (line.length() > 0) {
-					// check if string matches bye
-					if (line.equalsIgnoreCase("bye"))
-						break;
-					
-					// Get an answer randomly from the responses array
-					String answer = responses[(int)(Math.random()*responses.length)];
-
-					System.out.println("Support: " + answer);
+				//open data input on
+				server_dis = new DataInputStream(socket.getInputStream());
+				//System.out.println("Debug:  Stream opened");
+				String question = server_dis.readUTF();  // exception could happen here
+				
+				
+				
+				if (question.equalsIgnoreCase( test )) {
+					// Don't respond or worry about this test connections
+					//clean up current connections
 					try {
-						log_writer.write("Support: " + answer + newLine);
-					} catch (Exception e23) {
+						first_time = false;  //disable first time message
+						server_dis.close();
+						socket.close();
+					} catch (Exception close_error) { 
+						System.out.println( close_error);
+						try {
+							log_writer.write(close_error  + newLine);
+						} catch (Exception log_error) {
 							System.out.println("Error: Could not write to TechSupportLog.txt") ;
-							System.out.println(e23);
+							System.out.println(log_error);
+						}
 					}
-				} else {
-					
-					System.out.println("Support: You there?");
+				} else {		
+				
+					//show and log cleint question
+					System.out.println("Client: " + question);
 					try {
-						log_writer.write("Support: You there?"  + newLine);
-					} catch (Exception e) {
-							System.out.println("Error: Could not write to TechSupportLog.txt") ;
-							System.out.println(e);
+						log_writer.write("Client: " + question + newLine);
+					} catch (Exception e34) {
+						System.out.println("Error: Could not write to TechSupportLog.txt") ;
+						System.out.println(e34);
 					}
-				}
-			}
+					
+					// if the line has no characters...
+					if (question.length() > 0) {
+						// check if string matches bye
+						if (question.equalsIgnoreCase("bye")){
+							bye_occured = true;
+							
+							//Server Exits
+							System.out.println("Support: Bye-bye.");
+							server_dos = new DataOutputStream(socket.getOutputStream());
+							server_dos.writeUTF(" Bye-bye.");
+							try {
+								log_writer.write("Support: Bye-bye."  + newLine + "Session Ended:  " + new Date() + newLine);
+							} catch (Exception e) {
+								System.out.println("Error: Could not write to TechSupportLog.txt") ;
+								System.out.println(e);
+							}
+							//no break, server keeps running
+						
+						//} else 
+							
+						}
+						else {	
+													
+							// Get an answer randomly from the responses array
+							String answer = responses[(int)(Math.random()*responses.length)];
+		
+							server_dos = new DataOutputStream(socket.getOutputStream());
+							server_dos.writeUTF(answer);
+							System.out.println("Support: " + answer);
+							try {
+								log_writer.write("Support: " + answer + newLine);
+							} catch (Exception e23) {
+									System.out.println("Error: Could not write to TechSupportLog.txt") ;
+									System.out.println(e23);
+							}
+							
+							//close data_out_stream
+							try {
+								server_dos.close();
+							} catch (Exception close_error) { 
+								System.out.println( close_error);
+								try {
+									log_writer.write(close_error  + newLine);
+								} catch (Exception log_error) {
+									System.out.println("Error: Could not write to TechSupportLog.txt") ;
+									System.out.println(log_error);
+								}
+							}
+						}
+					
+					} else {
+						
+						if(bye_occured==false){
+							server_dos = new DataOutputStream(socket.getOutputStream());
+							server_dos.writeUTF("Support: You there?");
+							System.out.println("Support: You there?");
+							try {
+								log_writer.write("Support: You there?"  + newLine);
+							} catch (Exception e) {
+									System.out.println("Error: Could not write to TechSupportLog.txt") ;
+									System.out.println(e);
+							}
+						} else { bye_occured = false; }
+						
+					}//End if lenght >0
+					
+					//clean up current connections
+					try {
+						server_dis.close();
+						socket.close();
+						
+					} catch (Exception close_error) { 
+						System.out.println( close_error);
+						try {
+							log_writer.write(close_error  + newLine);
+						} catch (Exception log_error) {
+							System.out.println("Error: Could not write to TechSupportLog.txt") ;
+							System.out.println(log_error);
+						}
+					}
+					
+				} //end if first time else
+			}//End while(true)
+			
 		} catch (Exception e) {
 			//Server Error
+			//server_dos = new DataOutputStream(socket.getOutputStream());
+			//server_dos.writeUTF("Support: I can't help you!");
 			System.out.println("Support: I can't help you!");
 			
 			try {
@@ -170,16 +264,23 @@ public class TechSupportServer {
 				System.out.println("Error: Could not write to TechSupportLog.txt") ;
 				System.out.println(e2);
 			}
+			
+			//clean up current connections
+			try {
+				server_dis.close();
+				socket.close();
+			} catch (Exception close_error) { 
+				System.out.println( close_error);
+				try {
+					log_writer.write(close_error  + newLine);
+				} catch (Exception log_error) {
+					System.out.println("Error: Could not write to TechSupportLog.txt") ;
+					System.out.println(log_error);
+				}
+			}
 		}	    
 		
-		//Server Exits
-		System.out.println("Support: Bye-bye.");
-		try {
-			log_writer.write("Support: Bye-bye."  + newLine + "Session Ended:  " + new Date() + newLine);
-		} catch (Exception e) {
-			System.out.println("Error: Could not write to TechSupportLog.txt") ;
-			System.out.println(e);
-		}
+
 		
 		//Close file io's
 		try {

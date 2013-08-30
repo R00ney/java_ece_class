@@ -1,0 +1,119 @@
+
+Neal O'Hara
+ngohara
+This session started Thu Aug 29 10:21:43 EDT 2013
+TechSupportServer is up at 127.0.1.1 on port 1919
+Support: Hello! I'm available to answer your questions.
+Support: If at any time you no longer my help, just type
+         'Bye' to leave.
+Connection made from a calling client!
+Support: I can't help you!
+Support: Bye-bye.
+Session Ended:  Thu Aug 29 10:22:12 EDT 2013
+
+Neal O'Hara
+ngohara
+This session started Thu Aug 29 10:23:11 EDT 2013
+TechSupportServer is up at 127.0.1.1 on port 1919
+Support: Hello! I'm available to answer your questions.
+Support: If at any time you no longer my help, just type
+         'Bye' to leave.
+Connection made from a calling client!
+Support: I can't help you!
+Support: Bye-bye.
+Session Ended:  Thu Aug 29 10:23:30 EDT 2013
+
+Neal O'Hara
+ngohara
+This session started Thu Aug 29 10:30:18 EDT 2013
+TechSupportServer is up at 127.0.1.1 on port 1919
+Support: Hello! I'm available to answer your questions.
+Support: If at any time you no longer my help, just type
+         'Bye' to leave.
+Connection made from a calling client!
+Support: I can't help you!
+Support: Bye-bye.
+Session Ended:  Thu Aug 29 10:31:40 EDT 2013
+
+Neal O'Hara
+ngohara
+This session started Thu Aug 29 10:32:08 EDT 2013
+TechSupportServer is up at 127.0.1.1 on port 1919
+Support: Hello! I'm available to answer your questions.
+Support: If at any time you no longer my help, just type
+         'Bye' to leave.
+Connection made from a calling client!
+Support: I can't help you!
+Support: Bye-bye.
+Session Ended:  Thu Aug 29 14:19:56 EDT 2013
+
+Neal O'Hara
+ngohara
+This session started Thu Aug 29 14:45:35 EDT 2013
+TechSupportServer is up at 127.0.1.1 on port 1919
+Support: Hello! I'm available to answer your questions.
+Support: If at any time you no longer my help, just type
+         'Bye' to leave.
+Connection made from a calling client!
+Support: I can't help you!
+Support: Bye-bye.
+Session Ended:  Thu Aug 29 14:50:06 EDT 2013
+
+Neal O'Hara
+ngohara
+This session started Thu Aug 29 15:14:23 EDT 2013
+TechSupportServer is up at 127.0.1.1 on port 1919
+Support: Hello! I'm available to answer your questions.
+Support: If at any time you no longer my help, just type
+         'Bye' to leave.
+Connection made from a calling client!
+Support: I can't help you!
+Support: Bye-bye.
+Session Ended:  Thu Aug 29 16:04:26 EDT 2013
+
+Neal O'Hara
+ngohara
+This session started Thu Aug 29 17:22:56 EDT 2013
+TechSupportServer is up at 127.0.1.1 on port 1919
+Support: Hello! I'm available to answer your questions.
+Support: If at any time you no longer my help, just type
+         'Bye' to leave.
+Connection made from a calling client!
+Client: This is a test connection
+Support: Bye-bye.
+Session Ended:  Thu Aug 29 17:23:22 EDT 2013
+
+Neal O'Hara
+ngohara
+This session started Thu Aug 29 18:27:31 EDT 2013
+TechSupportServer is up at 127.0.1.1 on port 1919
+Support: Hello! I'm available to answer your questions.
+Support: If at any time you no longer my help, just type
+         'Bye' to leave.
+Connection made from a calling client!
+Client: This is a test connection
+Connection made from a calling client!
+Client: asfdasfd
+Support: You may want to re-install the OS.
+Connection made from a calling client!
+Client: asdfadsf
+Support: Just wait. It will fix itself.
+Connection made from a calling client!
+Client: adsfasdf
+Support: Try it on a different computer.
+Connection made from a calling client!
+Client: adfasdf
+Support: Try it on a different computer.
+Connection made from a calling client!
+Client: 
+Support: You there?
+Connection made from a calling client!
+Client: 
+Support: You there?
+Connection made from a calling client!
+Client: asdfasdf
+Support: Just wait. It will fix itself.
+Connection made from a calling client!
+Client: bye
+Support: Bye-bye.
+Session Ended:  Thu Aug 29 18:28:18 EDT 2013
