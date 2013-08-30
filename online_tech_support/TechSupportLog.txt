@@ -1,118 +1,64 @@
-
 Neal O'Hara
 ngohara
-This session started Wed Aug 28 17:30:55 EDT 2013
-Support: Hello! I'm available to answer your questions.
-Support: If at any time you no longer my help, just type
-         'Bye' to leave.
-Client:   ajdkfh         Support: Make sure your computer is turned on. That will help.
-Client:   ajkf         Support: Try it on a different computer.
-Client:   adkjf         Support: Try banging on it a little.
-Client:            Support: You there?
-Client:            Support: You there?
-Client:            Support: You there?
-Client:   adsjkf         Support: Try banging on it a little.
-Client:   bye         Support: Bye-bye.
-
-Neal O'Hara
-ngohara
-This session started Wed Aug 28 17:36:31 EDT 2013
-Support: Hello! I'm available to answer your questions.
-Support: If at any time you no longer my help, just type
-         'Bye' to leave.
-Client:   laksdjf         Support: Try banging on it a little.
-Client:   adklsjf         Support: Try it on a different computer.
-Client:            Support: You there?
-Client:            Support: You there?
-Client:            Support: You there?
-Client:            Support: You there?
-Client:            Support: You there?
-Client:   1         Support: Try it on a different computer.
-Client:            Support: You there?
-Client:            Support: You there?
-Client:            Support: You there?
-Client:   adsl;jfk         Support: You may want to re-install the OS.
-Client:            Support: You there?
-Client:            Support: You there?
-Client:   bye         Support: Bye-bye.
-Session Ended:  Wed Aug 28 17:36:46 EDT 2013
-
-Neal O'Hara
-ngohara
-This session started Thu Aug 29 01:35:25 EDT 2013
-Support: Hello! I'm available to answer your questions.
-Support: If at any time you no longer my help, just type
-         'Bye' to leave.
-ERROR: Attempt to connect to the TechSupportServer at 127.0.1.1 has failed.
-This network address may be incorrect for the server,
-or the server may not be up. The specific failure is:
-java.net.ConnectException: Connection refused
-
-Neal O'Hara
-ngohara
-This session started Thu Aug 29 01:38:49 EDT 2013
-Support: Hello! I'm available to answer your questions.
-Support: If at any time you no longer my help, just type
-         'Bye' to leave.
-Connected to the server at 127.0.1.1
-
-Neal O'Hara
-ngohara
-This session started Thu Aug 29 10:28:03 EDT 2013
-Support: Hello! I'm available to answer your questions.
-Support: If at any time you no longer my help, just type
-         'Bye' to leave.
-Connected to the server at 127.0.1.1
-Client:   kjhjkh         Client: kjhjkh            ERROR: Attempt to connect to the TechSupportServer at 127.0.1.1 has failed.
-This network address may be incorrect for the server,
-or the server may not be up. The specific failure is:
-java.net.ConnectException: Connection refused
-Session Ended:  Thu Aug 29 10:29:54 EDT 2013
-
-Neal O'Hara
-ngohara
-This session started Thu Aug 29 19:23:33 EDT 2013
+TechSupportClient Program
+This session started Fri Aug 30 00:55:13 EDT 2013
 Connected to the server at 127.0.1.1
 This is a test connection
-Client: asdf            Server : Your computer is just too old. Buy a new one.
+Support: Hello! I'm available to answer your questions.
+Support: If at any time you no longer my help, just type
+         'Bye' to leave.
 Client: asdf            Server : Just wait. It will fix itself.
+Client: asdf            Server : Reboot your computer.
+Client: adsf            Server : You may want to re-install the OS.
 Client: asdf            Server : You may want to re-install the OS.
-Client: asdf            Server : Your computer is just too old. Buy a new one.
-Client: adfs            Server : Just wait. It will fix itself.
-Client: asdf            Server : Try it on a different computer.
+Client: afsd            Server : Reboot your computer.
 Client: asdf            Server : You may want to re-install the OS.
 Client: asdf            Server : Reboot your computer.
-Client:             Server : Support: You there?
-Client:             Server : Support: You there?
-Client:             Server : Support: You there?
-Client:             Server : Support: You there?
-Client: asdf            Server : Your computer is just too old. Buy a new one.
 Client: bye            Server :  Bye-bye.
-Session Ended:  Thu Aug 29 19:24:07 EDT 2013
-
+Session Ended:  Fri Aug 30 00:55:30 EDT 2013
 Neal O'Hara
 ngohara
-This session started Thu Aug 29 19:24:11 EDT 2013
+TechSupportClient Program
+This session started Fri Aug 30 01:30:03 EDT 2013
 Connected to the server at 127.0.1.1
 This is a test connection
-Client: asdf            Server : Try banging on it a little.
-Client: kasjdfl;            Server : Try banging on it a little.
-Client: alksdfj            Server : Reboot your computer.
+Support: Hello! I'm available to answer your questions.
+Support: If at any time you no longer my help, just type
+         'Bye' to leave.
+Client: lkjasdf            Server : Make sure your computer is turned on. That will help.
+Client: al;ksdfj            Server : Your computer is just too old. Buy a new one.
+Client: al;skfdj            Server : Try banging on it a little.
+Client: aldks;fj            Server : Make sure your computer is turned on. That will help.
+Client:             Server : Support: You there?
+Client:             Server : Support: You there?
+Client: asld;kfj            Server : Your computer is just too old. Buy a new one.
 Client: bye            Server :  Bye-bye.
-Session Ended:  Thu Aug 29 19:41:56 EDT 2013
-
+Session Ended:  Fri Aug 30 01:30:26 EDT 2013
 Neal O'Hara
 ngohara
-This session started Thu Aug 29 19:50:53 EDT 2013
+TechSupportClient Program
+This session started Fri Aug 30 01:32:33 EDT 2013
 Connected to the server at 127.0.1.1
 This is a test connection
-Client: asdfsadf            Server : Your computer is just too old. Buy a new one.
-Client: afdsadf            Server : Make sure your computer is turned on. That will help.
-Client: asdfsadf            Server : Make sure your computer is turned on. That will help.
-Client: adsffasdf            Server : Try banging on it a little.
-Client:             Server : Support: You there?
-Client:             Server : Support: You there?
-Client:             Server : Support: You there?
+Server:  Hello! I'm available to answer your questions.
+         If at any time you no longer my help, just type
+        'Bye' to leave.
 Client: asdf            Server : Just wait. It will fix itself.
 Client: bye            Server :  Bye-bye.
-Session Ended:  Thu Aug 29 19:51:11 EDT 2013
+Session Ended:  Fri Aug 30 01:32:49 EDT 2013
+Neal O'Hara
+ngohara
+TechSupportClient Program
+This session started Fri Aug 30 02:13:07 EDT 2013
+Connected to the server at 127.0.1.1
+This is a test connection
+Server:  Hello! I'm available to answer your questions.
+         If at any time you no longer my help, just type
+        'Bye' to leave.
+Client: asdlfkj            Server : Try it on a different computer.
+Client: aldsfkj            Server : Make sure your computer is turned on. That will help.
+Client:             Server : Support: You there?
+Client: alsfdkj            Server : Try it on a different computer.
+Client:             Server : Support: You there?
+Client: bye            Server :  Bye-bye.
+Session Ended:  Fri Aug 30 02:13:50 EDT 2013

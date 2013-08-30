@@ -117,3 +117,20 @@ Connection made from a calling client!
 Client: bye
 Support: Bye-bye.
 Session Ended:  Thu Aug 29 18:28:18 EDT 2013
+Neal O'Hara
+ngohara
+
+TechSupportServer Program
+This session started Fri Aug 30 02:13:01 EDT 2013
+TechSupportServer is up at 127.0.1.1 on port 1919
+Connection made from a calling client!
+Server:  Hello! I'm available to answer your questions.
+         If at any time you no longer my help, just type
+        'Bye' to leave.
+Client: asdlfkj          Support: Try it on a different computer.
+Client: aldsfkj          Support: Make sure your computer is turned on. That will help.
+Client:           Support: You there?
+Client: alsfdkj          Support: Try it on a different computer.
+Client:           Support: You there?
+Client: bye          Support: Bye-bye.
+Session Ended:  Fri Aug 30 02:13:50 EDT 2013
