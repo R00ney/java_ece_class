@@ -134,3 +134,19 @@ Client: alsfdkj          Support: Try it on a different computer.
 Client:           Support: You there?
 Client: bye          Support: Bye-bye.
 Session Ended:  Fri Aug 30 02:13:50 EDT 2013
+Neal O'Hara
+ngohara
+
+TechSupportServer Program
+This session started Fri Aug 30 02:38:23 EDT 2013
+TechSupportServer is up at 127.0.1.1 on port 1919
+Connection made from a calling client!
+Server:  Hello! I'm available to answer your questions.
+         If at any time you no longer my help, just type
+        'Bye' to leave.
+Client: asdf          Support: Try banging on it a little.
+Client: afsd          Support: Try banging on it a little.
+Client: asfd          Support: Make sure your computer is turned on. That will help.
+Client: adsf          Support: Just wait. It will fix itself.
+Client: bye          Support: Bye-bye.
+Session Ended:  Fri Aug 30 02:38:47 EDT 2013
