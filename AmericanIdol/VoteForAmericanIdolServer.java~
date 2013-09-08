@@ -1,0 +1,21 @@
+// Lab 2
+// Neal O'Hara
+// ngohara
+// ngohara@ncsu.edu
+// 9/4/13
+
+
+import java.util.*;
+import java.net.*;
+
+public class VoteForAmericanIdolServer {
+	
+	public static void main(String[] args) { 
+		
+		
+		
+		
+		
+      	}	
+	
+}
