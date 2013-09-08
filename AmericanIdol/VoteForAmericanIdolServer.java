@@ -25,6 +25,7 @@ public class VoteForAmericanIdolServer{
 	                   "Big Bubba Barnhill"};
 	    
 	    ArrayList<String> voters = new ArrayList<String>();
+	    int[] voteTotals = new int[contestants.length];
 	    
 	    /*--------------------------------------------------------------------*/               
 	                   
@@ -49,15 +50,48 @@ public class VoteForAmericanIdolServer{
 				
 		}//end if args
 		
+		//Start Server's socket
 		DatagramSocket receiveSocket = new DatagramSocket(port_num);
 		
 		System.out.println("VoteForAmericanIdolServer is up at "
 	         + InetAddress.getLocalHost().getHostAddress()
                  + " on port " + receiveSocket.getLocalPort());
         
+                 
+        //Start Server's buffer
+        byte[] receiveBuffer = new byte[8192];
         
+        DatagramPacket receivePacket = new 	DatagramPacket(receiveBuffer,receiveBuffer.length);
         
+        while(true){
+        
+        	receiveSocket.receive(receivePacket); //wait for packet to come
+        	
+        	String newVote = new String(receiveBuffer, 0, receivePacket.getLength());
+        	
+        	String senderAddress = ((InetSocketAddress) receivePacket.getSocketAddress()).getHostName();
+        	
+        	if(voters.contains(senderAddress)){
+        		System.out.println(senderAddress + " has already voted.");
+        		continue; //skip this recipient
+        	}
+        	else {
+        		voters.add(senderAddress);
+        		System.out.println("Voters so far: " + voters);
+        		//show address for debug
+        	}
+        	
+        	int index = Integer.parseInt(newVote); 
+        	voteTotals[index]++;
+        	
+        	for(int i=1; i< contestants.length; i++) {
+        		System.out.print(contestants[i] + " " + voteTotals[i] + ", ");
+        	}
+        	System.out.println(); //for newline
+        	
+        
+        }//end while true
 	
-	}	
+	}//End main	
 	
-}
+}//End Class Vote_..._Server
