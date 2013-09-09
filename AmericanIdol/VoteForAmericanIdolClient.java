@@ -3,58 +3,104 @@
 // ngohara @ ngohara@ncsu.edu
 // 9/7/13
 
+//import javax.servlet.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.net.*;
 import java.util.Date;
+import java.util.Enumeration;
+import java.util.Random;
+
 
 public class VoteForAmericanIdolClient extends JApplet implements ActionListener
 {
 	// class variables
-	JRadioButton contestant1 = new JRadioButton();
-	JRadioButton contestant2 = new JRadioButton();
-	JRadioButton contestant3 = new JRadioButton();
-	JRadioButton contestant4 = new JRadioButton();
-	JRadioButton contestant5 = new JRadioButton();
 	
+	//can handle arbritrary up to 99 of contestants
+	JRadioButton[] contestant_i = new JRadioButton[99];
 	ButtonGroup contestants = new ButtonGroup();
 	JButton submitButton = new JButton("Submit");
 	JLabel msgLabel = new JLabel("Select a contestant and press Submit");
-	
 	JPanel panel = new JPanel();
+	int numberOfContestants = 0;
+	Random rand = new Random();
+	int port = 2222;
 	
-
+	
+	
 	//builds GUI
 	public void init() { //the main for web apps
 		
-		String newLine = System.getProperty ( "line.separator" );
-		String myname = "Neal O'Hara" + newLine + "ngohara";
+		//Set GUI parameters from html tags
+		for(int x=1; true; x++){	//will break at # limit
+		
+			//initialize jradiobuttons
+			contestant_i[x-1] = new JRadioButton();
+			
+			//set text for buttons
+			contestant_i[x-1].setText(getParameter(new String("name"+x)));
+			
+			//determine number of buttons
+			if(contestant_i[x-1].getText() == null){
+				numberOfContestants = x-1;
+				break;
+			}
+			
+			//randomize the button colors
+			int rand_color = rand.nextInt(16777216); //generate a random color
+			contestant_i[x-1].setBackground(new Color(rand_color));
+			contestant_i[x-1].setForeground(this.getContrastTextColor(new Color(rand_color)));
+			contestant_i[x-1].setOpaque(true);
+			
+			//Stack and center buttons
+			//contestant_i[x-1].setAlignmentX(Component.CENTER_ALIGNMENT);
+
+		}//end for(true) break
+		
 		
 		//Start Program Output
+		String newLine = System.getProperty ( "line.separator" );
+		String myname = "Neal O'Hara" + newLine + "ngohara";
 		System.out.println(myname + newLine + "VoteForAmericanIdolsServer Program");
 		System.out.println("This session started " + new Date() + newLine);
 		
+		
 			// Build the GUI
 		panel.add(msgLabel);
-		panel.add(contestant1);
-		panel.add(contestant2);
-		panel.add(contestant3);
-		panel.add(contestant4);
-		panel.add(contestant5);
+		for(int i=1; i <= numberOfContestants; i++){
+			panel.add(contestant_i[i-1]);
+		}
 		panel.add(submitButton);
+		
 		add(panel); // call JApplet to add to browser's window
 
-		contestants.add(contestant1);
-		contestants.add(contestant2);
-		contestants.add(contestant3);
-		contestants.add(contestant4);
-		contestants.add(contestant5);
+		for(int i=1; i <= numberOfContestants; i++){
+			contestants.add(contestant_i[i-1]);
+		}
+
+		
+		// test port value is non-null and pos-ints and connect
+		String pnum = getParameter("port");
+		Boolean test = (( pnum!= null) & (pnum.matches("\\d+(\\.\\d+)?") ));
+		if( test ){
+			port = Integer.parseInt( pnum ); //get port# from html
+			System.out.println("Debug, using port :"+pnum);
+		} else {
+		
+			msgLabel.setText("Sorry, unable to connect to Server. Please Try again later. ");
+			System.out.println("Debug fail, port :"+pnum);
+			submitButton.setEnabled(false);// disable button!
+		}	
 	
+		
 		submitButton.addActionListener(this); //get submnit button clicked
 		
+		
 	} //end init()
+	
+	
 	
 	
 	//Code that services GUI here
@@ -62,13 +108,11 @@ public class VoteForAmericanIdolClient extends JApplet implements ActionListener
 	
 		System.out.println("Debug: Submit Pushed");
 		
-		String vote;
-		if (contestant1.isSelected()) vote = "1";
-		else if (contestant2.isSelected()) vote = "2";
-		else if (contestant3.isSelected()) vote = "3";
-		else if (contestant4.isSelected()) vote = "4";
-		else if (contestant5.isSelected()) vote = "5";
-		else    { // no radio button was selected...
+		String vote = null;
+		for(int i=1; i <= numberOfContestants; i++){
+			if(contestant_i[i-1].isSelected()) vote = String.valueOf(i);
+		}
+		if( vote == null) { // no radio button was selected...
 				msgLabel.setText("Select a contestant before SUBMIT");
 				msgLabel.setForeground(Color.red);
 				return; 
@@ -78,15 +122,20 @@ public class VoteForAmericanIdolClient extends JApplet implements ActionListener
 		// Disable GUI objects so user
 		 // doesn't try to reselect or send again.
 		 submitButton.setEnabled(false);// disable button!
-		 contestant1.setEnabled(false); // disable button!
-		 contestant2.setEnabled(false); // disable button!
-		 contestant3.setEnabled(false); // disable button!
-		 contestant4.setEnabled(false); // disable button!
-		 contestant5.setEnabled(false); // disable button!
-
+		for(int i=1; i <= numberOfContestants; i++){
+			(contestant_i[i-1]).setEnabled(false); // disable button!
+		}
+		
 		 msgLabel.setText(" "); //clear
 		 
 	} //end actionPerformed
+	
+	
+	// pick black or white to contrast with background color
+	public static Color getContrastTextColor(Color color){
+		double y = (299*color.getRed() + 587*color.getGreen() + 114*color.getBlue())/1000;
+		return (y >= 128) ? Color.black : Color.white;
+	}
 
 //No Main, because browser starts code
 
