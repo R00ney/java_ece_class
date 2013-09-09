@@ -3,7 +3,7 @@
 // ngohara @ ngohara@ncsu.edu
 // 9/7/13
 
-//import javax.servlet.*;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -24,17 +24,26 @@ public class VoteForAmericanIdolClient extends JApplet implements ActionListener
 	ButtonGroup contestants = new ButtonGroup();
 	JButton submitButton = new JButton("Submit");
 	JLabel msgLabel = new JLabel("Select a contestant and press Submit");
+	
+	//Create layout and panel for applet
+	GridLayout voteApp = new GridLayout();
 	JPanel panel = new JPanel();
+	
 	int numberOfContestants = 0;
-	Random rand = new Random();
+	
 	int port = 2222;
 	
 	
-	
+	/*------------------------------------------------------------------------*/
 	//builds GUI
 	public void init() { //the main for web apps
 		
 		//Set GUI parameters from html tags
+		// This expects all contestants to be listed in parms,
+		// starting with name1 , to name#, where # is last contestant 
+		// (# must be less than 100)
+		Color rand_color = null;
+		Color prev_rand_color = null;
 		for(int x=1; true; x++){	//will break at # limit
 		
 			//initialize jradiobuttons
@@ -45,18 +54,22 @@ public class VoteForAmericanIdolClient extends JApplet implements ActionListener
 			
 			//determine number of buttons
 			if(contestant_i[x-1].getText() == null){
+				
+				if(x==1){ // if no contestants, Sorry and disable submit
+					msgLabel.setText("Sorry, there are no contestants to vote for now.");
+					 submitButton.setEnabled(false);// disable button!
+				}
 				numberOfContestants = x-1;
-				break;
+				break; //leave loop b/c no more contestants
 			}
 			
 			//randomize the button colors
-			int rand_color = rand.nextInt(16777216); //generate a random color
-			contestant_i[x-1].setBackground(new Color(rand_color));
-			contestant_i[x-1].setForeground(this.getContrastTextColor(new Color(rand_color)));
+			rand_color = this.newRandColor(prev_rand_color);
+			contestant_i[x-1].setBackground( rand_color );
+			contestant_i[x-1].setForeground(this.getContrastTextColor(rand_color));
 			contestant_i[x-1].setOpaque(true);
+			prev_rand_color = rand_color;
 			
-			//Stack and center buttons
-			//contestant_i[x-1].setAlignmentX(Component.CENTER_ALIGNMENT);
 
 		}//end for(true) break
 		
@@ -69,6 +82,8 @@ public class VoteForAmericanIdolClient extends JApplet implements ActionListener
 		
 		
 			// Build the GUI
+		voteApp = new GridLayout(numberOfContestants+2,1,1,2); //stack all buttons and text
+		panel = new JPanel(voteApp);
 		panel.add(msgLabel);
 		for(int i=1; i <= numberOfContestants; i++){
 			panel.add(contestant_i[i-1]);
@@ -99,24 +114,20 @@ public class VoteForAmericanIdolClient extends JApplet implements ActionListener
 		
 		//Set up actionlistener for required event
 		submitButton.addActionListener(this); //get submnit button clicked
-		
-		
-		
 
-		
-		
 	} //end init()
 	
 	
 	
-	
+	/*------------------------------------------------------------------------*/	
 	//Code that services GUI here
 	public void actionPerformed(ActionEvent ae) {
 	
-		System.out.println("Debug: Submit Pushed");
+		//System.out.println("Debug: Submit Pushed");
 		
 		String vote = null;
 		for(int i=1; i <= numberOfContestants; i++){
+			//identify contestant voted for
 			if(contestant_i[i-1].isSelected()) vote = String.valueOf(i);
 		}
 		if( vote == null) { // no radio button was selected...
@@ -131,6 +142,7 @@ public class VoteForAmericanIdolClient extends JApplet implements ActionListener
 		String serverAddress = "localhost"; // default address
 		URL webServerAddress = getDocumentBase(); // get from browser
 		
+		//pick appropriate url/ip
 		if ((webServerAddress == null) || (webServerAddress.toString().startsWith("file:"))) {
 			// We're running locally on the AppletViewer. Do nothing.
 		} else {
@@ -138,10 +150,9 @@ public class VoteForAmericanIdolClient extends JApplet implements ActionListener
 			serverAddress = webServerAddress.getHost();
 		}
 		
+		// create socket
 		System.out.println("Server address is " + serverAddress); 
-
 		InetSocketAddress isa = new InetSocketAddress(serverAddress,port);
-		
 		byte[] sendBuffer = vote.getBytes();
 		
 		
@@ -160,8 +171,7 @@ public class VoteForAmericanIdolClient extends JApplet implements ActionListener
 			return;
 		}
 		
-		
-		
+
 		// Disable GUI objects so user
 		 // doesn't try to reselect or send again.
 		 submitButton.setEnabled(false);// disable button!
@@ -174,12 +184,44 @@ public class VoteForAmericanIdolClient extends JApplet implements ActionListener
 	} //end actionPerformed
 	
 	
+	/*------------------------------------------------------------------------*/
 	// pick black or white to contrast with background color
 	public static Color getContrastTextColor(Color color){
 		double y = (299*color.getRed() + 587*color.getGreen() + 114*color.getBlue())/1000;
 		return (y >= 128) ? Color.black : Color.white;
 	}
 
+	
+	/*------------------------------------------------------------------------*/
+	// Generates a new random color, and makes sure it's not in the
+	// same color majority as prev color
+	public static Color newRandColor(Color prev_color){
+		Random rand = new Random();	
+		Color rand_color = new Color(rand.nextInt(255),rand.nextInt(255),rand.nextInt(255));
+		Boolean test1 = true;
+		Boolean test2 = true;
+		Boolean test3 = true;
+		int diff = 100;
+		
+		//if null, this is first instance, return color immediately
+		if( prev_color!=null ){
+
+			//if rand_color too close to prev_color, re-randomize
+			while( test1 & test2 & test3 ){
+				rand_color = new Color(rand.nextInt(255),rand.nextInt(255),rand.nextInt(255));
+			
+				test1 = ( ((rand_color.getRed()+diff)>prev_color.getRed()) & ((rand_color.getRed()-diff)<prev_color.getRed()));	
+				test2 = ( ((rand_color.getGreen()+diff)>prev_color.getGreen()) & ((rand_color.getGreen()-diff)<prev_color.getGreen()));
+				test3 = ( ((rand_color.getBlue()+diff)>prev_color.getBlue()) & ((rand_color.getBlue()-diff)<prev_color.getBlue()));
+			}
+			
+		}
+		return rand_color;
+	}
+	
+	
+	
+	
 //No Main, because browser starts code
 
 } // end class Vote...Client
