@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.net.*;
+import java.net.URL;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Random;
@@ -93,9 +94,15 @@ public class VoteForAmericanIdolClient extends JApplet implements ActionListener
 			System.out.println("Debug fail, port :"+pnum);
 			submitButton.setEnabled(false);// disable button!
 		}	
-	
+
+
 		
+		//Set up actionlistener for required event
 		submitButton.addActionListener(this); //get submnit button clicked
+		
+		
+		
+
 		
 		
 	} //end init()
@@ -118,7 +125,43 @@ public class VoteForAmericanIdolClient extends JApplet implements ActionListener
 				return; 
 				}       
 		System.out.println("Contestant #" + vote + " was selected.");
+	
+		
+				// Get IP address
+		String serverAddress = "localhost"; // default address
+		URL webServerAddress = getDocumentBase(); // get from browser
+		
+		if ((webServerAddress == null) || (webServerAddress.toString().startsWith("file:"))) {
+			// We're running locally on the AppletViewer. Do nothing.
+		} else {
+			// We're running on a web server.
+			serverAddress = webServerAddress.getHost();
+		}
+		
+		System.out.println("Server address is " + serverAddress); 
 
+		InetSocketAddress isa = new InetSocketAddress(serverAddress,port);
+		
+		byte[] sendBuffer = vote.getBytes();
+		
+		
+		//Send packet with vote
+		try {
+			DatagramPacket sendPacket = new    DatagramPacket(sendBuffer,sendBuffer.length,isa);
+			DatagramSocket sendSocket = new DatagramSocket();
+			sendSocket.send(sendPacket);
+			msgLabel.setText("Your vote has been submitted!");
+			msgLabel.setForeground(Color.blue);
+		}
+		catch(IOException ioe)
+		{
+			msgLabel.setText("Error sending your vote! Please try again.");  
+			msgLabel.setForeground(Color.red);
+			return;
+		}
+		
+		
+		
 		// Disable GUI objects so user
 		 // doesn't try to reselect or send again.
 		 submitButton.setEnabled(false);// disable button!
@@ -126,7 +169,7 @@ public class VoteForAmericanIdolClient extends JApplet implements ActionListener
 			(contestant_i[i-1]).setEnabled(false); // disable button!
 		}
 		
-		 msgLabel.setText(" "); //clear
+//		 msgLabel.setText(" "); //clear
 		 
 	} //end actionPerformed
 	
