@@ -102,11 +102,11 @@ public class VoteForAmericanIdolClient extends JApplet implements ActionListener
 		Boolean test = (( pnum!= null) & (pnum.matches("\\d+(\\.\\d+)?") ));
 		if( test ){
 			port = Integer.parseInt( pnum ); //get port# from html
-//			System.out.println("Debug, using port :"+pnum);
+			System.out.println("Debug, using port :"+pnum);
 		} else {
 		
 			msgLabel.setText("Sorry, unable to connect to Server. Please Try again later. ");
-//			System.out.println("Debug fail, port :"+pnum);
+			System.out.println("Debug fail, port :"+pnum);
 			submitButton.setEnabled(false);// disable button!
 		}	
 
