@@ -108,24 +108,9 @@ public class ChatRoomClient implements ActionListener {
 			}
 			
 			//Check Server response for ACCEPT for name ok,
-			//if not, then keep sign in window open, and alert
-			// user of duplicate name
-			final String r_string = r.toString();
-			if( r_string != "ACCEPT" ){
-				
-				Runnable report_error = new Runnable(){
-					public void run() {
-						username.setEditable(true);
-						status.setText( r_string );
-						status.setBackground(Color.RED);
-						
-					}
-				};
-				SwingUtilities.invokeLater(report_error);
-			}
-			
 			//with ACCEPT, Chat Window visible, Sign In invisible,
-			else {
+			final String r_string = r.toString();
+			if( r_string.equals( "ACCEPT") ){
 				Runnable openChat = new Runnable() {
 					public void run(){
 						chatTextArea.setText(""); //clear!
@@ -135,6 +120,20 @@ public class ChatRoomClient implements ActionListener {
 					}
 				};
 				SwingUtilities.invokeLater(openChat);
+			}
+			//if not, then keep sign in window open, and alert
+			// user of duplicate name
+			else {
+				System.out.println(r_string);
+				Runnable report_error = new Runnable(){
+					public void run() {
+						username.setEditable(true);
+						status.setText( r_string );
+						status.setBackground(Color.RED);
+						
+					}
+				};
+				SwingUtilities.invokeLater(report_error);
 			}
 			
 			
