@@ -9,6 +9,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import java.io.*;
 import java.net.*;
+import java.text.SimpleDateFormat;
 
 
 public class ChatRoomClient implements ActionListener {
@@ -18,7 +19,7 @@ public class ChatRoomClient implements ActionListener {
 	private JButton    signIn = new JButton("Sign In");
 	private JTextField username = new JTextField(16);
 	private JLabel     usernameLabel = new JLabel("User Name: ");
-	private JLabel     status = new JLabel("Status: Waiting for User Name");
+	private JLabel     status = new JLabel("Waiting for one word User Name");
 	
 	// Chat window fields
 	private JFrame chatWindow = new JFrame("Messages");
@@ -27,6 +28,9 @@ public class ChatRoomClient implements ActionListener {
 	private JTextField messageField = new JTextField();
 	private JButton send = new JButton("Send");
 	private JPanel enterPanel = new JPanel(new GridLayout(0,2,5,5));
+	private JButton logOut = new JButton("Log Out");
+	private JPanel bottomPane = new JPanel(new FlowLayout(FlowLayout.TRAILING));
+	private JScrollPane scrollPane = new JScrollPane(chatTextArea);
 	
 	//Networking fields
 	private Socket socket = null;
@@ -35,6 +39,10 @@ public class ChatRoomClient implements ActionListener {
 	private ObjectInputStream oInStream;
 	private ObjectOutputStream oOutStream;
 	
+	//Other
+	String newLine = System.getProperty ( "line.separator" );
+	
+	/*------------------------------------------------------------------------*/
 	
 	//Constructor to initialize GUIs
 	public ChatRoomClient(){
@@ -51,11 +59,15 @@ public class ChatRoomClient implements ActionListener {
 		signInWindow.setVisible(true);
 		
 		//Initialize Chat Window
-		//chatPanel.setLayout(new GridLayout(0,2,5,5) );
-		enterPanel.add( chatTextArea );
+		enterPanel.add( messageField );
 		enterPanel.add(  send );
+		bottomPane.add( logOut );
 		chatPanel.add( enterPanel, BorderLayout.NORTH );
-		chatPanel.add( messageField, BorderLayout.CENTER );
+		chatTextArea.setLineWrap(true);
+		chatTextArea.setWrapStyleWord(true);
+		chatPanel.add( scrollPane, BorderLayout.CENTER );
+		chatPanel.add( bottomPane, BorderLayout.SOUTH );
+		chatTextArea.setEditable(false);
 		chatPanel.setBorder(BorderFactory.createEmptyBorder(5,10,10,10) );
 		chatWindow.add( chatPanel );
 		
@@ -66,10 +78,14 @@ public class ChatRoomClient implements ActionListener {
 		chatWindow.setVisible(false);
 		
 		//Action Events to handle
+		username.addActionListener(this);
 		signIn.addActionListener(this);
+		messageField.addActionListener(this);
 		send.addActionListener(this);
+		logOut.addActionListener(this);
 	}
 	
+	/*------------------------------------------------------------------------*/
 	
 	//Connects to server and waits for messages from server
 	class ConnectionWorker extends SwingWorker<Void,Void> {
@@ -129,41 +145,136 @@ public class ChatRoomClient implements ActionListener {
 					public void run() {
 						username.setEditable(true);
 						status.setText( r_string );
-						status.setBackground(Color.RED);
-						
+						status.setForeground(Color.RED);
+						signInWindow.setSize(500, 110);
 					}
 				};
 				SwingUtilities.invokeLater(report_error);
 			}
 			
 			
-			return null;
+			//Wait for messages from server
+			while(true) {
+				Object someObject = oInStream.readObject();
+				
+				//if string, process and output response
+				if( someObject instanceof String )
+				{
+					final String m = (String) someObject;
+					Runnable updateText = new Runnable() {
+						public void run() {
+							chatTextArea.append(newLine + getTime() + "| " + m);
+						}
+					};
+					SwingUtilities.invokeAndWait(updateText);
+				}
+
+			}//end while true
+
+		}
 		
+		//gets the time for timestamping messages
+		private String getTime(){
+			SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+			return (String) sdf.format(new Date());
 		}
 	};//end class ConnectionWorker
 	
 	
+	/*------------------------------------------------------------------------*/
+	
+	// Handles sending messages to server
+	class SendMessageWorker extends SwingWorker<Boolean,Void> {
+		@Override
+		protected Boolean doInBackground() throws Exception {
+			
+			try{
+			//oOutStream = new ObjectOutputStream(socket.getOutputStream());
+			//write the username to server
+			oOutStream.writeObject(messageField.getText().trim());
+			} catch (IOException ioe){
+				return false;
+			}
+			return true;
+		}//end doInBackground
+		
+		protected void done(){
+			try{
+				//Handles sending messages
+				//if succesfull, clear message field 
+				//(note: text already added to chatTextArea
+				if(get()==true) {
+					messageField.setText(""); //Clear! ZAP!
+				}
+				//if not, report error
+				else {
+					System.out.println("Error, couldn't send text to server");
+					chatTextArea.append(newLine +"Error, couldn't send text to server");
+				}
+			} catch (Exception e) {
+				System.out.println("Error: Should not occur");
+				System.out.println( e);
+			}
+			//Finished Sending, enable another write and send
+			messageField.setEditable(true);
+			send.setEnabled(true);
+		}//end done
+	
+	}//end class SendMessageWorker
+	
+	/*------------------------------------------------------------------------*/
 	
 	//Handles GUIs events
 	public void actionPerformed(ActionEvent e){
 	
-		if(e.getSource() == signIn ) {
-			System.out.println("Sign In Button Clicked");
-			new ConnectionWorker().execute(); 	//launch worker thread
+		//if signIn pressed or username "enter" buttoned
+		if( (e.getSource() == signIn) || (e.getSource() ==  username) ) {
+			//check for actual text in field
+			if(username.getText().equals("")){
+				status.setText("Please enter valid username");
+			}
+			else{
+				System.out.println("Sign In Button Clicked");
+				new ConnectionWorker().execute(); 	//launch worker thread
+			}
 		}
-		else if(e.getSource() == send ) {
-			System.out.println("Send Button Clicked");
+		//if send pressed or message "enter" buttoned
+		else if((e.getSource() == send)||(e.getSource() == messageField) ) {
+			if(messageField.getText().equals("")){
+				//ignore
+			}
+			else {
+				System.out.println("Send Button Clicked");
+				messageField.setEditable(false);
+				send.setEnabled(false);
+				new SendMessageWorker().execute(); 	// launch send thread
+			}
+		}
+		else if(e.getSource() == logOut ) {
+			//perform log out actions that will reset sign in window
+			// and clear chat window
+			System.out.println("Log Out Button Clicked");
+			signInWindow.setSize(250, 180);
+			status.setText("Waiting for one word User Name");
+			username.setEditable(true);
+			chatWindow.setVisible(false);
+			signInWindow.setVisible(true);
+			chatTextArea.setText(""); // clear text
+			messageField.setText(""); // clear text
+			try {
+				socket.close();
+			} catch (Exception e1) {
+				// do nothing
+			}
+			socket = null;
+
 		}
 		else {
 			System.out.println("Error, unidentified action event");
 		}
-		
-
-		
-	
 	}//end actionPerformed
 	
-
+	/*------------------------------------------------------------------------*/
 	
 	//Program's setup and handles starting events
 	public static void main (String[] args) {
@@ -184,13 +295,11 @@ public class ChatRoomClient implements ActionListener {
 		};
 		//create Chat Client
 		SwingUtilities.invokeLater(task);
-		
-		
-		
-		
+
 	} //end main
-		
-		
-		
-		
+	
+	/*------------------------------------------------------------------------*/
+	
+
+	
 }//end class ChatRoomClient
