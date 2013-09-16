@@ -10,6 +10,7 @@ import javax.swing.*;
 import java.io.*;
 import java.net.*;
 import java.text.SimpleDateFormat;
+import javax.imageio.ImageIO;
 
 
 public class ChatRoomClient implements ActionListener {
@@ -40,7 +41,9 @@ public class ChatRoomClient implements ActionListener {
 	private ObjectOutputStream oOutStream;
 	
 	//Other
-	String newLine = System.getProperty ( "line.separator" );
+	private String newLine = System.getProperty ( "line.separator" );
+	private static ImageIcon icon = null;
+	
 	
 	/*------------------------------------------------------------------------*/
 	
@@ -54,6 +57,7 @@ public class ChatRoomClient implements ActionListener {
 		signInWindow.add( status );
 		
 		//Display Sign in window
+		signInWindow.setIconImage(icon.getImage()); //set custom icon
 		signInWindow.setSize(250, 180);
 		signInWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		signInWindow.setVisible(true);
@@ -73,6 +77,7 @@ public class ChatRoomClient implements ActionListener {
 		
 		
 		// Not display chat window
+		chatWindow.setIconImage(icon.getImage()); //set custom icon
 		chatWindow.setSize(500, 500);
 		chatWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		chatWindow.setVisible(false);
@@ -140,7 +145,7 @@ public class ChatRoomClient implements ActionListener {
 			//if not, then keep sign in window open, and alert
 			// user of duplicate name
 			else {
-				System.out.println(r_string);
+//				System.out.println(r_string);
 				Runnable report_error = new Runnable(){
 					public void run() {
 						username.setEditable(true);
@@ -234,7 +239,7 @@ public class ChatRoomClient implements ActionListener {
 				status.setText("Please enter valid username");
 			}
 			else{
-				System.out.println("Sign In Button Clicked");
+//				System.out.println("Sign In Button Clicked");
 				new ConnectionWorker().execute(); 	//launch worker thread
 			}
 		}
@@ -244,7 +249,7 @@ public class ChatRoomClient implements ActionListener {
 				//ignore
 			}
 			else {
-				System.out.println("Send Button Clicked");
+//				System.out.println("Send Button Clicked");
 				messageField.setEditable(false);
 				send.setEnabled(false);
 				new SendMessageWorker().execute(); 	// launch send thread
@@ -253,7 +258,7 @@ public class ChatRoomClient implements ActionListener {
 		else if(e.getSource() == logOut ) {
 			//perform log out actions that will reset sign in window
 			// and clear chat window
-			System.out.println("Log Out Button Clicked");
+//			System.out.println("Log Out Button Clicked");
 			signInWindow.setSize(250, 180);
 			status.setText("Waiting for one word User Name");
 			username.setEditable(true);
@@ -279,6 +284,17 @@ public class ChatRoomClient implements ActionListener {
 	//Program's setup and handles starting events
 	public static void main (String[] args) {
 	
+		//Use custom Icon image
+		URL icon_link = null;
+		try {
+			icon_link = new URL("https://github.com/R00ney/icon_image/blob/master/NGO.ico?raw=true");
+		} catch (MalformedURLException murle) {
+			System.out.println("Bad URL for icon image");
+			System.out.println( murle );
+		}
+		icon = new ImageIcon(icon_link);
+		
+		
 		//Start Program Output
 		String newLine = System.getProperty ( "line.separator" );
 		String myname = "Neal O'Hara" + newLine + "ngohara";
