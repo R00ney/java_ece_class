@@ -3,6 +3,7 @@ package edu.ncsu.ngohara.myfirstapp;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
+import android.view.View;
 
 public class MainActivity extends Activity {
 
@@ -19,5 +20,11 @@ public class MainActivity extends Activity {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
+    
+    /**Called at click**/
+    public void sendMessage (View view){
+    	
+    }
+    
     
 }
