@@ -38,4 +38,14 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="64dp" />
 
+    <TextView
+        android:id="@+id/errorTextField"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="31dp"
+        android:text="@string/error_textField"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
 </RelativeLayout>

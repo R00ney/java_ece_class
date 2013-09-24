@@ -7,6 +7,8 @@ import android.app.Activity;
 import android.view.Menu;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.os.AsyncTask;
 
 
 public class SignInActivity extends Activity implements OnClickListener {
@@ -22,9 +24,13 @@ public class SignInActivity extends Activity implements OnClickListener {
         ProgressBar progressBar1 = (ProgressBar) findViewById(R.id.progressBar1);
         progressBar1.setVisibility(ProgressBar.INVISIBLE);
         
+        TextView errorTextField = (TextView) findViewById(R.id.errorTextField);
+        errorTextField.setVisibility(TextView.INVISIBLE);
+        
+        
     }
 
-
+ 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -41,6 +47,32 @@ public class SignInActivity extends Activity implements OnClickListener {
      
         
     }
+    
+    public class ConnectionWorker extends AsyncTask<String,Void,String> {
+        @Override
+        protected String doInBackground(String... arg0) {
+            // TODO Auto-generated method stub
+            return null;
+        }
+        @Override
+        protected void onPostExecute(String val) {
+        	ProgressBar progressBar1 = (ProgressBar) findViewById(R.id.progressBar1);
+            progressBar1.setVisibility(ProgressBar.INVISIBLE);
+            Button signInButton = (Button) findViewById(R.id.signInButton);
+            signInButton.setEnabled(true);
+            
+            if(val.equals("Success")){
+            	System.out.println("Successfully logged in.");
+            
+            } else {
+            	System.out.println("Error: Could not log in.");
+                TextView errorTextField = (TextView) findViewById(R.id.errorTextField);
+                errorTextField.setText("Error, Could not Log in.");
+                errorTextField.setVisibility(TextView.VISIBLE);
+            }
+        }
+    }
+
     
     
 }
