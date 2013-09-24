@@ -9,10 +9,16 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.os.AsyncTask;
+import java.net.Socket;
+import java.io.DataOutputStream;
+import java.io.DataInputStream;
+
 
 
 public class SignInActivity extends Activity implements OnClickListener {
 
+private Socket socket;	
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,10 +54,32 @@ public class SignInActivity extends Activity implements OnClickListener {
         
     }
     
+    private class SocketConnect extends AsyncTask<String, Void, String> {
+		protected String doInBackground(String... params) {
+			// TODO Auto-generated method stub
+			String             serverAddress="10.139.73.38";
+			int                serverPort=1234;
+			try {
+				// socket is declared in parent class 
+				socket = new Socket(serverAddress,serverPort);
+				DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
+				dos.writeUTF(params[0]);
+			}
+			catch (Exception e)
+			{
+				String t2 = "Not connected!" + e.toString();
+				return t2; // w/o connecting to server!                                                                                                                                               
+			}
+
+			return "Connected";
+		}
+    }
     public class ConnectionWorker extends AsyncTask<String,Void,String> {
         @Override
         protected String doInBackground(String... arg0) {
             // TODO Auto-generated method stub
+        	
+        	new SocketConnect().execute();
             return null;
         }
         @Override
