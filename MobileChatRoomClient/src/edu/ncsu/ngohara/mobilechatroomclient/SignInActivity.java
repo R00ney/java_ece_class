@@ -54,6 +54,45 @@ private Socket socket;
         
     }
     
+    
+    
+    
+    
+    // worker thread handeling chat client
+    public class ConnectionWorker extends AsyncTask<String,Void,String> {
+        
+    	//Conection worker main
+    	@Override
+        protected String doInBackground(String... arg0) {
+            // TODO Auto-generated method stub
+        	
+        	new SocketConnect().execute();
+            return null;
+        }
+
+        @Override
+        //clean and reset sign in window
+        protected void onPostExecute(String val) {
+        	ProgressBar progressBar1 = (ProgressBar) findViewById(R.id.progressBar1);
+            progressBar1.setVisibility(ProgressBar.INVISIBLE);
+            Button signInButton = (Button) findViewById(R.id.signInButton);
+            signInButton.setEnabled(true);
+            
+            if(val.equals("Connected")){
+            	System.out.println("Successfully logged in.");
+            
+            } else {
+            	System.out.println("Error: Could not log in.");
+                TextView errorTextField = (TextView) findViewById(R.id.errorTextField);
+                errorTextField.setText("Error, Could not Log in.");
+                errorTextField.setVisibility(TextView.VISIBLE);
+            }
+        }//end on PostExecute
+    }//end connection worker
+
+    
+    
+  //to make socket connection and check username
     private class SocketConnect extends AsyncTask<String, Void, String> {
 		protected String doInBackground(String... params) {
 			// TODO Auto-generated method stub
@@ -106,35 +145,7 @@ private Socket socket;
 			}
 			  */
 			 
-		}
-    }
-    public class ConnectionWorker extends AsyncTask<String,Void,String> {
-        @Override
-        protected String doInBackground(String... arg0) {
-            // TODO Auto-generated method stub
-        	
-        	new SocketConnect().execute();
-            return null;
-        }
-        @Override
-        protected void onPostExecute(String val) {
-        	ProgressBar progressBar1 = (ProgressBar) findViewById(R.id.progressBar1);
-            progressBar1.setVisibility(ProgressBar.INVISIBLE);
-            Button signInButton = (Button) findViewById(R.id.signInButton);
-            signInButton.setEnabled(true);
-            
-            if(val.equals("Connected")){
-            	System.out.println("Successfully logged in.");
-            
-            } else {
-            	System.out.println("Error: Could not log in.");
-                TextView errorTextField = (TextView) findViewById(R.id.errorTextField);
-                errorTextField.setText("Error, Could not Log in.");
-                errorTextField.setVisibility(TextView.VISIBLE);
-            }
-        }
-    }
-
-    
+		}//end sockect do in Background 
+    }// end socket connect
     
 }
