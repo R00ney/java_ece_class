@@ -68,8 +68,8 @@ private Socket socket;
             // TODO Auto-generated method stub
         	
         	//new SocketConnect().execute();
-    		String             serverAddress="10.139.75.144";
-			int                serverPort=1234;
+    		String             serverAddress="127.0.1.1";
+			int                serverPort=45000;
 			try {
 				// socket is declared in parent class 
 				socket = new Socket(serverAddress,serverPort);
@@ -88,6 +88,37 @@ private Socket socket;
 				String bust = "DataOutputStream Failed" + e.toString();
 				return bust;
 			}
+			
+			//Check Server response for ACCEPT for name ok,
+			//with ACCEPT, Chat Window visible, Sign In invisible,
+		//	final String r_string = r.toString();
+		//	if( r_string.equals( "ACCEPT") ){
+		//		Runnable openChat = new Runnable() {
+		//			public void run(){
+		//				chatTextArea.setText(""); //clear!
+		//				signInWindow.setVisible(false);
+		//				chatWindow.setVisible(true);
+		//				username.setEditable(false);
+		//			}
+		//		};
+		//		SwingUtilities.invokeLater(openChat);
+		//	}
+			//if not, then keep sign in window open, and alert
+			// user of duplicate name
+		//	else {
+//				System.out.println(r_string);
+		//		Runnable report_error = new Runnable(){
+		//			public void run() {
+		//				username.setEditable(true);
+		//				status.setText( r_string );
+		//				status.setForeground(Color.RED);
+		//				signInWindow.setSize(500, 110);
+		//			}
+		//		};
+		//		SwingUtilities.invokeLater(report_error);
+		//	}
+			
+			
 			return "Connected";
             //return null;
         }
@@ -113,61 +144,5 @@ private Socket socket;
     }//end connection worker
 
     
-  /*  
-  //to make socket connection and check username
-    private class SocketConnect extends AsyncTask<String, Void, String> {
-		protected String doInBackground(String... params) {
-			// TODO Auto-generated method stub
-			String             serverAddress="10.139.75.144";
-			int                serverPort=1234;
-			try {
-				// socket is declared in parent class 
-				socket = new Socket(serverAddress,serverPort);
-				DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
-				dos.writeUTF(params[0]);
-			}
-			catch (Exception e)
-			{
-				String t2 = "Not connected!" + e.toString();
-				return t2; // w/o connecting to server!                                                                                                                                               
-			}
-
-			return "Connected";
-			
-			
-			
-			/*
-			 			//Check Server response for ACCEPT for name ok,
-			//with ACCEPT, Chat Window visible, Sign In invisible,
-			final String r_string = r.toString();
-			if( r_string.equals( "ACCEPT") ){
-				Runnable openChat = new Runnable() {
-					public void run(){
-						chatTextArea.setText(""); //clear!
-						signInWindow.setVisible(false);
-						chatWindow.setVisible(true);
-						username.setEditable(false);
-					}
-				};
-				SwingUtilities.invokeLater(openChat);
-			}
-			//if not, then keep sign in window open, and alert
-			// user of duplicate name
-			else {
-//				System.out.println(r_string);
-				Runnable report_error = new Runnable(){
-					public void run() {
-						username.setEditable(true);
-						status.setText( r_string );
-						status.setForeground(Color.RED);
-						signInWindow.setSize(500, 110);
-					}
-				};
-				SwingUtilities.invokeLater(report_error);
-			}
-			  ////
-			 
-		}//end sockect do in Background 
-    }// end socket connect
-    */
-}
+ 
+}//end signInActivity
