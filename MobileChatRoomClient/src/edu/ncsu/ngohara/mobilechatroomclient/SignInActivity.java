@@ -51,7 +51,8 @@ private Socket socket;
         Button signInButton = (Button) findViewById(R.id.signInButton);
         signInButton.setEnabled(false);
      
-        
+        //start connection thread, which creates socket and moves to chat activity
+        new ConnectionWorker().execute();
     }
     
     
