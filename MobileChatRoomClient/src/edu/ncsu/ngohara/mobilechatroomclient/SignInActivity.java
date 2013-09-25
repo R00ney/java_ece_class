@@ -69,10 +69,9 @@ private Socket socket;
     	//Conection worker main
     	@Override
         protected String doInBackground(String... arg0) {
-            // TODO Auto-generated method stub
         	
-        	//new SocketConnect().execute();
-    		String             serverAddress="127.0.1.1";
+        	
+    		String             serverAddress="192.168.7.101";
 			int                serverPort=45000;
 			try {
 				// socket is declared in parent class 
