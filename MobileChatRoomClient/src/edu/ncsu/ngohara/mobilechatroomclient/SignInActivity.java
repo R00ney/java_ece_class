@@ -57,7 +57,7 @@ private Socket socket;
     private class SocketConnect extends AsyncTask<String, Void, String> {
 		protected String doInBackground(String... params) {
 			// TODO Auto-generated method stub
-			String             serverAddress="10.139.73.38";
+			String             serverAddress="10.139.75.144";
 			int                serverPort=1234;
 			try {
 				// socket is declared in parent class 
@@ -72,6 +72,40 @@ private Socket socket;
 			}
 
 			return "Connected";
+			
+			
+			
+			/*
+			 			//Check Server response for ACCEPT for name ok,
+			//with ACCEPT, Chat Window visible, Sign In invisible,
+			final String r_string = r.toString();
+			if( r_string.equals( "ACCEPT") ){
+				Runnable openChat = new Runnable() {
+					public void run(){
+						chatTextArea.setText(""); //clear!
+						signInWindow.setVisible(false);
+						chatWindow.setVisible(true);
+						username.setEditable(false);
+					}
+				};
+				SwingUtilities.invokeLater(openChat);
+			}
+			//if not, then keep sign in window open, and alert
+			// user of duplicate name
+			else {
+//				System.out.println(r_string);
+				Runnable report_error = new Runnable(){
+					public void run() {
+						username.setEditable(true);
+						status.setText( r_string );
+						status.setForeground(Color.RED);
+						signInWindow.setSize(500, 110);
+					}
+				};
+				SwingUtilities.invokeLater(report_error);
+			}
+			  */
+			 
 		}
     }
     public class ConnectionWorker extends AsyncTask<String,Void,String> {
@@ -89,7 +123,7 @@ private Socket socket;
             Button signInButton = (Button) findViewById(R.id.signInButton);
             signInButton.setEnabled(true);
             
-            if(val.equals("Success")){
+            if(val.equals("Connected")){
             	System.out.println("Successfully logged in.");
             
             } else {
