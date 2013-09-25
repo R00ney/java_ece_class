@@ -8,11 +8,15 @@ import android.view.Menu;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.EditText;
+
 import android.os.AsyncTask;
 import java.net.Socket;
 import java.io.DataOutputStream;
 import java.io.DataInputStream;
-
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.ObjectInputStream;
 
 
 public class SignInActivity extends Activity implements OnClickListener {
@@ -80,18 +84,36 @@ private Socket socket;
 				return t2; // w/o connecting to server!                                                                                                                                               
 			}
 			
+			EditText usernameEdit = (EditText) findViewById(R.id.usernameEdit);
+			String username_text = usernameEdit.getText().toString();
+			
+			
 			//connect to DataOutStream dos or report error
-			try {
-				DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
-				//dos.writeUTF(params[0]);
-			} catch (Exception e){
-				String bust = "DataOutputStream Failed" + e.toString();
-				return bust;
+			// Pass name to server to test username ok
+			//create object streams (in/out) or report error
+			Object reply_object = null;
+			try{
+				ObjectOutputStream oOutStream = new ObjectOutputStream(socket.getOutputStream());
+				//write the username to server
+				oOutStream.writeObject(username_text);
+				
+				ObjectInputStream oInStream = new ObjectInputStream(socket.getInputStream());
+				//wait and get reply
+				reply_object = oInStream.readObject();
+			} catch (Exception e) {
+				//connection error
+				System.out.println("Could not connect with object streams");
+				System.out.println(e );
+				String objectio_bust = "Could not connect with object streams" + e.toString();
+				return objectio_bust;
 			}
+			
+			
+			
 			
 			//Check Server response for ACCEPT for name ok,
 			//with ACCEPT, Chat Window visible, Sign In invisible,
-		//	final String r_string = r.toString();
+		//	final String r_string = reply_object.toString();
 		//	if( r_string.equals( "ACCEPT") ){
 		//		Runnable openChat = new Runnable() {
 		//			public void run(){
