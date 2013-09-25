@@ -107,43 +107,25 @@ private Socket socket;
 				String objectio_bust = "Could not connect with object streams" + e.toString();
 				return objectio_bust;
 			}
-			
-			
-			
-			
+
 			//Check Server response for ACCEPT for name ok,
 			//with ACCEPT, Chat Window visible, Sign In invisible,
-		//	final String r_string = reply_object.toString();
-		//	if( r_string.equals( "ACCEPT") ){
-		//		Runnable openChat = new Runnable() {
-		//			public void run(){
-		//				chatTextArea.setText(""); //clear!
-		//				signInWindow.setVisible(false);
-		//				chatWindow.setVisible(true);
-		//				username.setEditable(false);
-		//			}
-		//		};
-		//		SwingUtilities.invokeLater(openChat);
-		//	}
+			final String r_string = reply_object.toString();
+			if( r_string.equals( "ACCEPT") ){
+				//do nothing, connected and name appropriate
+				System.out.println("Username Accepted");
+			}
 			//if not, then keep sign in window open, and alert
 			// user of duplicate name
-		//	else {
-//				System.out.println(r_string);
-		//		Runnable report_error = new Runnable(){
-		//			public void run() {
-		//				username.setEditable(true);
-		//				status.setText( r_string );
-		//				status.setForeground(Color.RED);
-		//				signInWindow.setSize(500, 110);
-		//			}
-		//		};
-		//		SwingUtilities.invokeLater(report_error);
-		//	}
+			else {
+				System.out.println(r_string);
+				return "Username Not Accepted";
+		
+			}
 			
-			
+			//Everything worked ok, so return Connected
 			return "Connected";
-            //return null;
-        }
+        }//end doInBackground
 
         @Override
         //clean and reset sign in window
