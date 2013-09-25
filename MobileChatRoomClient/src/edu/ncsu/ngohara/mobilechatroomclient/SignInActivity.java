@@ -67,8 +67,29 @@ private Socket socket;
         protected String doInBackground(String... arg0) {
             // TODO Auto-generated method stub
         	
-        	new SocketConnect().execute();
-            return null;
+        	//new SocketConnect().execute();
+    		String             serverAddress="10.139.75.144";
+			int                serverPort=1234;
+			try {
+				// socket is declared in parent class 
+				socket = new Socket(serverAddress,serverPort);
+			}
+			catch (Exception e)
+			{
+				String t2 = "Not connected!" + e.toString();
+				return t2; // w/o connecting to server!                                                                                                                                               
+			}
+			
+			//connect to DataOutStream dos or report error
+			try {
+				DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
+				//dos.writeUTF(params[0]);
+			} catch (Exception e){
+				String bust = "DataOutputStream Failed" + e.toString();
+				return bust;
+			}
+			return "Connected";
+            //return null;
         }
 
         @Override
@@ -92,7 +113,7 @@ private Socket socket;
     }//end connection worker
 
     
-    
+  /*  
   //to make socket connection and check username
     private class SocketConnect extends AsyncTask<String, Void, String> {
 		protected String doInBackground(String... params) {
@@ -144,9 +165,9 @@ private Socket socket;
 				};
 				SwingUtilities.invokeLater(report_error);
 			}
-			  */
+			  ////
 			 
 		}//end sockect do in Background 
     }// end socket connect
-    
+    */
 }
