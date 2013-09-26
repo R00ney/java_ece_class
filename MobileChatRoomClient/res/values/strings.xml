@@ -4,7 +4,9 @@
     <string name="app_name">MobileChatRoomClient</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
-	<string name="sign_in">Sign In!</string>
-	<string name="error_textField">Error Field!</string>
-    
+    <string name="sign_in">Sign In!</string>
+    <string name="error_textField">Error Field!</string>
+    <string name="title_activity_chat_room">ChatRoomActivity</string>
+	<string name="button_send"> Send! </string>
+	<string name="chat_large_text"> Chat Messages </string>
 </resources>

@@ -1,3 +1,7 @@
+//Lab 4
+// Neal O'Hara
+// ngohara @ ngohara@ncsu.edu
+
 package edu.ncsu.ngohara.mobilechatroomclient;
 
 import android.os.Bundle;
@@ -9,14 +13,14 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.EditText;
+import android.content.Intent;
 
 import android.os.AsyncTask;
 import java.net.Socket;
-import java.io.DataOutputStream;
-import java.io.DataInputStream;
-import java.io.IOException;
+
 import java.io.ObjectOutputStream;
 import java.io.ObjectInputStream;
+import java.util.Date;
 
 
 public class SignInActivity extends Activity implements OnClickListener {
@@ -28,6 +32,13 @@ public Socket socket;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
         
+      //Start Program Output
+      		String newLine = System.getProperty ( "line.separator" );
+      		String myname = "Neal O'Hara" + newLine + "ngohara";
+      		String programName = "ChatRoomClient ";
+      		System.out.println(myname + newLine + programName + "Program");
+      		System.out.println("This session started " + new Date() + newLine);
+      		
         Button signInButton = (Button) findViewById(R.id.signInButton);
         signInButton.setOnClickListener(this);
         
@@ -50,15 +61,31 @@ public Socket socket;
     
     public void onClick(View arg0){
     	System.out.println("Got a click");
-    	ProgressBar progressBar1 = (ProgressBar) findViewById(R.id.progressBar1);
-        progressBar1.setVisibility(ProgressBar.VISIBLE);
-        Button signInButton = (Button) findViewById(R.id.signInButton);
-        signInButton.setEnabled(false);
+
      
-        //start connection thread, which creates socket and moves to chat activity
-        new ConnectionWorker().execute();
+        //create username
+        EditText usernameEdit = (EditText) findViewById(R.id.usernameEdit);
+		String username_text = usernameEdit.getText().toString();
+		
+		//make sure username is functional
+		if(username_text.equals("")){
+			TextView errorTextField = (TextView) findViewById(R.id.errorTextField);
+            errorTextField.setText("Please enter a username...");
+            errorTextField.setVisibility(TextView.VISIBLE);
+			
+		} else {
+	    	ProgressBar progressBar1 = (ProgressBar) findViewById(R.id.progressBar1);
+	        progressBar1.setVisibility(ProgressBar.VISIBLE);
+	        Button signInButton = (Button) findViewById(R.id.signInButton);
+	        signInButton.setEnabled(false);
+		        
+			ChatRoomApplication app = (ChatRoomApplication) getApplication();
+			app.username_text = username_text;
+			
+	        //start connection thread, which creates socket and moves to chat activity
+			new ConnectionWorker().execute();
+		}
     }
-    
     
     
     
@@ -69,7 +96,7 @@ public Socket socket;
     	//Conection worker main
     	@Override
         protected String doInBackground(String... arg0) {
-        	
+        	       	
     		ObjectOutputStream oOutStream = null;
     		ObjectInputStream oInStream = null;
     		
@@ -78,9 +105,10 @@ public Socket socket;
     		app.oOutStream = oOutStream;
     		app.oInStream = oInStream;
     		
+    		String username_text = app.username_text;
         	
-    		String             serverAddress="192.168.7.101";
-			int                serverPort=45000;
+    		String  serverAddress = app.serverAddress;
+			int     serverPort= app.serverPort;
 			try {
 				// socket is declared in parent class 
 				socket = new Socket(serverAddress,serverPort);
@@ -90,9 +118,6 @@ public Socket socket;
 				String t2 = "Not connected!" + e.toString();
 				return t2; // w/o connecting to server!                                                                                                                                               
 			}
-			
-			EditText usernameEdit = (EditText) findViewById(R.id.usernameEdit);
-			String username_text = usernameEdit.getText().toString();
 			
 			
 			//connect to DataOutStream dos or report error
@@ -114,7 +139,11 @@ public Socket socket;
 				String objectio_bust = "Could not connect with object streams" + e.toString();
 				return objectio_bust;
 			}
-
+			//save vars for later use
+			app.socket = socket;
+    		app.oOutStream = oOutStream;
+    		app.oInStream = oInStream;
+    		
 			//Check Server response for ACCEPT for name ok,
 			//with ACCEPT, Chat Window visible, Sign In invisible,
 			final String r_string = reply_object.toString();
@@ -144,8 +173,18 @@ public Socket socket;
             
             if(val.equals("Connected")){
             	System.out.println("Successfully logged in.");
+            	
+            	Intent chatRoom = new Intent(SignInActivity.this,ChatRoomActivity.class);
+            	startActivity(chatRoom);
+            	
             
-            } else {
+            } else if(val.equals("Username Not Accepted")){
+            	System.out.println("Error: Invalid Username");
+                TextView errorTextField = (TextView) findViewById(R.id.errorTextField);
+                errorTextField.setText("Duplicate Username, Please Choose Another.");
+                errorTextField.setVisibility(TextView.VISIBLE);
+        	}
+            else {
             	System.out.println("Error: Could not log in.");
                 TextView errorTextField = (TextView) findViewById(R.id.errorTextField);
                 errorTextField.setText("Error, Could not Log in.");
