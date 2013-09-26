@@ -21,7 +21,7 @@ import java.io.ObjectInputStream;
 
 public class SignInActivity extends Activity implements OnClickListener {
 
-private Socket socket;	
+public Socket socket;	
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +70,14 @@ private Socket socket;
     	@Override
         protected String doInBackground(String... arg0) {
         	
+    		ObjectOutputStream oOutStream = null;
+    		ObjectInputStream oInStream = null;
+    		
+    		ChatRoomApplication app = (ChatRoomApplication) getApplication();
+    		app.socket = socket;
+    		app.oOutStream = oOutStream;
+    		app.oInStream = oInStream;
+    		
         	
     		String             serverAddress="192.168.7.101";
 			int                serverPort=45000;
@@ -92,11 +100,11 @@ private Socket socket;
 			//create object streams (in/out) or report error
 			Object reply_object = null;
 			try{
-				ObjectOutputStream oOutStream = new ObjectOutputStream(socket.getOutputStream());
+				oOutStream = new ObjectOutputStream(socket.getOutputStream());
 				//write the username to server
 				oOutStream.writeObject(username_text);
 				
-				ObjectInputStream oInStream = new ObjectInputStream(socket.getInputStream());
+				oInStream = new ObjectInputStream(socket.getInputStream());
 				//wait and get reply
 				reply_object = oInStream.readObject();
 			} catch (Exception e) {
