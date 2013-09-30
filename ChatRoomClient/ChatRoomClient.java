@@ -36,7 +36,7 @@ public class ChatRoomClient implements ActionListener {
 	//Networking fields
 	private Socket socket = null;
 	private String serverIPAddress = "localhost";
-	private int serverPort = 45000;
+	private int serverPort = 4500;
 	private ObjectInputStream oInStream;
 	private ObjectOutputStream oOutStream;
 	
