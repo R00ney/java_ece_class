@@ -197,38 +197,9 @@ public class ChatRoomServer implements Runnable{
 		System.out.println(myname + newLine + programName + "Program");
 		System.out.println("This session started " + new Date() + newLine);
 		
-		/*
-		//Deterimine how to use input arguments
-		if(args.length == 0){
-			System.out.println("A port number may optionally be provided as a command line parameter." + newLine + "If the optional port number is not provided, port 4500 is used by default." + newLine + "If you wish to use a specific port, please restart this program with the port number specified as a parameter");	
-		} else if (args.length > 2) {
-			System.out.println("Only two parameters, the optional IP address and the port number, are allowed." + newLine + "If the optional port number is not provided, port 4500 is used by default." + newLine + "Please retry with one or fewer parameters.");
-			return;
-		} else {
-			serverIPAddress = args[0];
-			
-			if(args.length ==2){
-				port_num = Integer.parseInt(args[1]);
-				if( (port_num < 1000) || (port_num > 9999) ){
-					System.out.println("The provide port number is out of range." + newLine + "Please retry the program with a port number bewteen 1000 - 9999");
-					return;
-				}
-			}
-			System.out.println("Port " + String.valueOf(port_num) + " will be used.");
-				
-		}//end if args
-		*/
-		
-		
-			// Set up Server to run in Event Dispatch Thread
-			//Runnable task = new Runnable(){
-			//	public void run() throws IOException{
-					new ChatRoomServer();
-			//	}
-			//};
-			//create Chat Client
-			//SwingUtilities.invokeLater(task);
-		
+		//Start server
+		new ChatRoomServer();
+
 		
 	} //end main
 	
