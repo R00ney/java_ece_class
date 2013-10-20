@@ -22,7 +22,7 @@ public class ChatRoomServer implements Runnable{
 	//Networking fields
 	private Socket socket = null;
 	private String serverIPAddress = "localhost";
-	private int serverPort = 4500;
+	private int serverPort = 45000;
 	private ServerSocket ss;
 	private ObjectInputStream oInStream;
 	private ObjectOutputStream oOutStream;
