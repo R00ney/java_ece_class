@@ -13,9 +13,11 @@ CFLAGS = $(DEBUG) #-deprecation
 
 #Edited to make all required classes first
 sim_cache:
+	clear
 	-rm *.class
 	$(JAVAC) $(CFLAGS) AbstractWordCount.java
 	$(JAVAC) $(CFLAGS) WordCountSync.java
+	$(JAVAC) $(CFLAGS) WordCountConcurrent.java
 	
 # type "make clean" to remove all your .class files
 clean:

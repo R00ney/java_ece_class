@@ -2,29 +2,32 @@
 // Neal O'Hara
 
 import java.util.Map;
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.io.OutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Date;
 
-public class WordCountSync extends AbstractWordCount {
-
-	Map<String,Integer> map = new HashMap<String,Integer>();
+public class WordCountConcurrent extends AbstractWordCount{
+	
+	Map<String,AtomicInteger> map = new ConcurrentHashMap<String,AtomicInteger>();	
 
 	protected void increment(String word) {
-		synchronized(this) {
-			if (map.containsKey(word)) {
-				// action if present
-				map.put(word, map.get(word)+1);
-			} else {
-				// action if not present
-				map.put(word, 1);
+		if (map.containsKey(word)) {
+			map.get(word).incrementAndGet();
+		} else {					
+			synchronized(this) {
+				if (!map.containsKey(word)) {
+					map.put(word,new AtomicInteger(1));
+				} else {
+					map.get(word).incrementAndGet();
+				}
 			}
+
 		}
-		
 	}
-	
+
 	public void print(OutputStream stream) throws IOException 
 	{
 		// create a new PrintStream
@@ -38,17 +41,19 @@ public class WordCountSync extends AbstractWordCount {
 		
 	}
 
+	
+	
 	public static void main(String[] args) {
 	
 	//Start Program Output
 		String newLine = System.getProperty ( "line.separator" );
 		String myname = "Neal O'Hara" + newLine + "ngohara";
-		String programName = "WordCountSync ";
+		String programName = "WordCountConcurrent ";
 		System.out.println(myname + newLine + programName + "Program");
 		System.out.println("This session started " + new Date() + newLine);
 		
 		
-		//program
+		
 		AbstractWordCount wc = new WordCountSync();
 		
 		
