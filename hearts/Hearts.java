@@ -6,7 +6,12 @@
 import java.util.*;
 
 
+
+
 public class Hearts {
+
+	public boolean debug_valid = true; 
+
 	public static void main(String[] args) throws InterruptedException {
 	
 			//Start Program Output
@@ -30,10 +35,11 @@ public class Hearts {
 		List<Thread> playerThreads = new ArrayList<Thread>();
 		for(String s: players) {
 			Thread t;
-			playerThreads.add(
-t=new Thread(new NaiveHeartsPlayer(s,game)));
+			playerThreads.add(t=new Thread(new NaiveHeartsPlayer(s,game)));
 			t.start();
 		}
+		
+		
 		for(Thread t: playerThreads)
 			t.join();
 		game.printGameScores();

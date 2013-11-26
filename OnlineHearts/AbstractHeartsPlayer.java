@@ -3,6 +3,7 @@
 //Neal O'Hara
 //10/26/13
 
+import java.rmi.RemoteException;
 
 public abstract class AbstractHeartsPlayer {
 
@@ -17,11 +18,11 @@ public abstract class AbstractHeartsPlayer {
 		this.name = name;
 	}
 
-	public abstract void setGame(HeartsGame game);
-	public abstract HeartsGame getGame();
+	public abstract void setGame(HeartsGameInterface game);
+	public abstract HeartsGameInterface getGame();
 
 
 	//public abstract boolean isMyTurn();	
-	public abstract void awaitTurn();
-	public abstract void takeTurn() throws HeartsGameException;
+	public abstract void awaitTurn() throws RemoteException;
+	public abstract void takeTurn() throws HeartsGameException, RemoteException;
 }

@@ -58,6 +58,12 @@ public class HeartsGame implements Serializable{
 			this.name = name;
 			this.card = card;
 		}
+		
+		//added for OnlineHearts for NaivePlayer
+		public PlayingCard getCard(){
+			return this.card;
+		}
+			
 	}
 
 	
@@ -309,8 +315,12 @@ public class HeartsGame implements Serializable{
 	boolean gameOver = false;
 	Hand hand=null;
 	
-	public Map<String,Integer> getScore(){
+	public synchronized Map<String,Integer> getScore(){
 		return totalScore;	
+	}
+	
+	public synchronized List<Play> getCurrentPlays() {
+		return hand.currentTrick.plays;	
 	}
 	
 	//accept player names?
@@ -466,7 +476,9 @@ public class HeartsGame implements Serializable{
 	
 	// Return a copy of the player’s hand
 	public synchronized List<PlayingCard> getHand(String name) {
+		
 		return new ArrayList<PlayingCard>(hand.hands.get(name));
+		
 	}
 
 	// Return a copy of all plays in the current trick

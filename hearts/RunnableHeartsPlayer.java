@@ -38,7 +38,8 @@ public abstract class RunnableHeartsPlayer extends AbstractHeartsPlayer implemen
 
 	//public, not protected?
 	public void takeTurn() throws HeartsGameException {		
-		PlayingCard card = selectCard();	
+		PlayingCard card = selectCard();
+		String name = getName();
 		game.addPlay(name,card);
 	}
 

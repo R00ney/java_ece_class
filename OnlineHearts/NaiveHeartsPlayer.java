@@ -7,19 +7,24 @@ import java.util.*;
 
 //can use the get plays methods for smarter players
 //
+import java.rmi.RemoteException;
 
 public class NaiveHeartsPlayer extends RunnableHeartsPlayer {
 	
 	Boolean debug_valid = false; //System parameter for debug statements
 	
-	NaiveHeartsPlayer(String name, HeartsGame game) {
+	NaiveHeartsPlayer(String name, HeartsGameInterface game) {
 		super(name);
 		setGame(game);
 	}
 
 	@Override
-	protected PlayingCard selectCard() {
-		List<PlayingCard> cards = game.getPlays();
+	protected PlayingCard selectCard() throws RemoteException, HeartsGameException{
+		List<HeartsGame.Play> plays_cards = game.getPlays();
+		List<PlayingCard> cards = new ArrayList<PlayingCard>();
+		for(HeartsGame.Play p: plays_cards){
+			cards.add(p.getCard());	
+		}
 		List<PlayingCard> hand = game.getHand(getName());
 		Collections.sort(hand);
 		
@@ -73,29 +78,6 @@ public class NaiveHeartsPlayer extends RunnableHeartsPlayer {
 			return arg0.getSuit().compareTo(arg1.getSuit());
 		}
 	}
-	
-/* Broken Method
 
-	public class CardComparator implements Comparator<PlayingCard> {
-		PlayingCard.Suit leadingSuit;
-		public CardComparator(PlayingCard.Suit s) {
-			leadingSuit = s;
-		}
-		@Override
-		public int compare(PlayingCard arg0, PlayingCard arg1) {
-		// move cards to the front that match suit field
-		// move low ranking cards to the front
-
-			if (arg0.getSuit()==arg1.getSuit())
-				return -arg0.getRank().compareTo(arg1.getRank());
-			if (arg0.getSuit()==leadingSuit)
-				return -1; // arg0 should come first
-			if (arg1.getSuit()==leadingSuit)
-				return 1;  // arg1 should come first
-
-			// otherwise, just use the normal Suit.compareTo() order.
-			return arg0.getSuit().compareTo(arg1.getSuit());		
-		}
-	} */
 
 }
