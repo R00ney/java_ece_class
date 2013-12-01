@@ -4,13 +4,17 @@ import java.util.List;
 
 public class Wire implements java.io.Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-	
-	public Wire() {
-		// TODO Auto-generated constructor stub
+
+	private String name = "?";
+	public Wire(String name) {
+		setName(name);
+	}
+	public void setName(String n){
+		name = n;
+	}
+	public String getName(){
+		return name;
 	}
 	
 	private boolean value;
